@@ -11,6 +11,10 @@ with open("datas/datas.json","r+",encoding="utf-8") as file:
 
 x = Bot(username=username,password=password)
 x.log_in()
+users = x.follow_taker()
+print(users)
+print(len(users))
+
 time.sleep(1000)
 
 
