@@ -21,7 +21,7 @@ class Bot:
     def driver_maker(self) -> Options:
         options = Options()
         options.add_argument("--lang=en-US")
-        options.add_argument("--headless")
+        # options.add_argument("--headless")
         options.add_argument("--incognito")
         
         return options
@@ -40,7 +40,7 @@ class Bot:
         time.sleep(2)
 
 
-    def follow_taker(self):
+    def following_taker(self):
         self.driver.get(url=self.main_url + self.username )
         time.sleep(2)
 
@@ -87,11 +87,54 @@ class Bot:
                 break
         return users
 
+    #t NOT: YAGMAİL İLE YAPICAĞIMIZ FONKSYİON İÇİN AYRI BİR FONKSİYON YAPICAZ. BU FUNC BİZE TAKİPÇİLERİ KAYDEDECEĞİMİZ
+    #T      DOSYADAKİ TAKİPÇİlERİ ÇIKTI EDİCEK VE FOLLOW_TAKER DAN ÖNCE VE SONRA ÇALIŞICAK ARDINDAN ALINAN İKİ LİSTE İLE(KEY LİSTESİ) BİZDE YAGMAİL FONKSİYONU İÇİNDE FARKLI OLANLARI BULUP YAGMAİL İLE ÇIKTI EDİCEZ.
+    #T      BU FONKSİYON İLE TAKİP ETMEYİ BIRAKANLARIDA BULABİLİRİZ  
 
-    def follower_taker(self):
+
+    def follower_taker(self) ->dict :
+        self.driver.get(url=self.main_url + self.username)
+        time.sleep(3)
+
+        follwer_tag = self.driver.find_element(By.XPATH , "/html/body/div[1]/div[6]/main/div/div/div[1]/div/div/div[3]/div[2]/div[3]/div/a[1]")
+        follwer_tag.click()
+        time.sleep(3)
+
+        def user_taker():
+            user_tags = self.driver.find_elements(By.XPATH , "//a[@class='d-inline-block no-underline mb-1']" )
+            users = {}
+            for tag in user_tags:
+                link = tag.get_attribute("href")
+                name = tag.get_attribute("href").split("/")[-1]
+                users.update({name:link})
+                 
+            return users
+        
+        followers = {}
+        
+        while True:
+            try:
+                followers.update(user_taker())
+
+                next_tag = self.driver.find_elements(By.XPATH , "//a[@rel='nofollow']")
+                next_tag = [tag for tag  in next_tag if tag.text == "Next"][0]
+                
+                next_tag.click()
+                time.sleep(3)
+            
+            except Exception as error:
+                break
+
+        return followers
+
+    def controller(self):
+        pass
+        #* takip edilenleri belirlediğimiz kıraterde olmayanları alıp çıktı edicek
+
+    
+    def unfollow(self,urls:dict):
         pass
 
-    def unfollow(self,urls:list):
-        pass
-
+    def closer(self):
+        self.driver.close()
 
