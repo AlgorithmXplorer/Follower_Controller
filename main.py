@@ -1,24 +1,30 @@
 
 from bot import Bot
+from file_funcs import *
+
 import time
 import json
 
-with open("datas/datas.json","r+",encoding="utf-8") as file:
-    datas:dict = json.load(file)
-    username = datas["username"]
-    password = datas["password"]
+datas = user_datas()
+username = datas["username"]
+password= datas["password"]
 
+
+x = user_saving()
+print(x)
 
 x = Bot(username=username,password=password)
 x.log_in()
-# users = x.following_taker()
-# print(users)
-# print(len(users))
 
-users = x.follower_taker()
-print(users)
-print(len(users))
+users = x.following_taker()
 
-time.sleep(1000)
+users_1 = x.follower_taker()
 
+
+# time.sleep(1000)
+
+user_saving(followers=users_1)
+user_saving(follows=users)
+x = user_saving()
+print(x)
 

@@ -40,7 +40,7 @@ class Bot:
         time.sleep(2)
 
 
-    def following_taker(self):
+    def following_taker(self) -> dict:
         self.driver.get(url=self.main_url + self.username )
         time.sleep(2)
 
@@ -81,7 +81,7 @@ class Bot:
                 next_tag = self.driver.find_elements(By.XPATH , "//a[@rel='nofollow']")
                 true_next = [tag for tag in next_tag if tag.text =="Next"]
                 true_next[0].click()
-                time.sleep(5)
+                time.sleep(3)
 
             except:
                 break
@@ -134,6 +134,17 @@ class Bot:
     
     def unfollow(self,urls:dict):
         pass
+
+    def mail_information(self,urls) -> str:
+        pass
+    #* aldığı hesapların takipçi ile takip sayısını alıp şu şekil çıktı vericek
+    """
+    -----
+    xxx hesabı 
+    takipçi: 
+    url:
+    -----
+    """
 
     def closer(self):
         self.driver.close()

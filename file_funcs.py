@@ -1,18 +1,27 @@
 import os 
 import json
 
-def user_datas():
-    with open("datas/datas.json", "r+" , encoding="utf-8") as file:
+def user_datas() -> dict:
+    with open("datas/datas.json","r+",encoding="utf-8") as file:
+        return json.load(file)
+
+def user_saving(follows:dict = None,followers:dict = None) -> dict:
+    if followers == None and follows == None:
+        with open("datas/users.json","r+",encoding="utf-8") as file:
+            datas:dict = json.load(file)
+        return datas
+
+    with open("datas/users.json","r+", encoding="utf-8") as file:
         datas:dict = json.load(file)
-    return datas
 
-class follow_file:
-    def __int__(self):
-        self.file_creater()
-
-    def file_creater(self):
-        with open("datas/users.json","a",encoding="utf-8") as file:
-            pass
+    if followers == None:
+        with open("datas/users.json","w", encoding="utf-8") as file:
+            datas["follows"] = follows
+            json.dump(datas,file,sort_keys=False,indent=4)
     
+    elif follows == None:
+        with open("datas/users.json","w", encoding="utf-8") as file:
+            datas["followers"] = followers
+            json.dump(datas,file,sort_keys=False,indent=4)
     
 
