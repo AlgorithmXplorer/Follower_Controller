@@ -5,9 +5,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 
-import requests
-import json
-
 import pandas as pd
 import time
 
@@ -139,10 +136,30 @@ class Bot:
         #* eğerki oda serie olursa o zaman pandas da olan bir metot kullanılır
     
     def unfollow(self,urls:dict):
-        pass
+        self.driver.get(url= self.main_url)
+        time.sleep(2)
 
-    def mail_information(self,urls) -> str:
+        urls_list = list(urls["follows"].values())
+        
+        def unfllw(url):
+            self.driver.get(url=url)
+            time.sleep(2)
+
+            unflw_tag = self.driver.find_element(By.XPATH,"//input[@data-disable-with='Unfollow']")
+            unflw_tag.click()
+            time.sleep(2)
+
+
+        for url in urls:
+            unfllw(url=url)            
+
+        
+
+    def mail_information(self,urls:dict) -> str:
         self.driver.get(url=self.main_url)
+
+        urls_list = list(urls["followers"].values())
+
         time.sleep(2)
 
         infos = []
@@ -157,11 +174,13 @@ class Bot:
 """
             return message
 
-        for url in urls:
+        for url in urls_list:
             msg = info_taker(url=url)
             infos.append(msg)
             time.sleep(1.5)
-        return 
+        
+        all_msg = f"<p>{'-'*30}</p>".join(infos)
+        return all_msg
 
 
     #* aldığı hesapların takipçi ile takip sayısını alıp şu şekil çıktı vericek

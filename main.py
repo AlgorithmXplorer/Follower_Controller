@@ -14,15 +14,16 @@ app_pasw = datas["app_password"]
 
 
 bot = Bot(username=username,password=password)
-# bot.log_in()
+bot.log_in()
 all_users:dict = user_saving()
 
 # follows = bot.following_taker()
 
 # followers = bot.follower_taker()
 
-links = list(all_users["followers"].values())[:5]
-msg = bot.mail_information(urls=links)
+links = list(all_users["follows"].values())[:5]
+
+# bot.unfollow(urls=links)
 
 
 time.sleep(1000)
