@@ -1,30 +1,35 @@
 
 from bot import Bot
 from file_funcs import *
-
 import time
 import json
 
+
+#* datas
 datas = user_datas()
 username = datas["username"]
 password= datas["password"]
+gmail = datas["gmail"]
+app_pasw = datas["app_password"]
 
 
-x = user_saving()
-print(x)
+bot = Bot(username=username,password=password)
+# bot.log_in()
+all_users:dict = user_saving()
 
-x = Bot(username=username,password=password)
-x.log_in()
+# follows = bot.following_taker()
 
-users = x.following_taker()
+# followers = bot.follower_taker()
 
-users_1 = x.follower_taker()
+links = list(all_users["followers"].values())[:5]
+msg = bot.mail_information(urls=links)
 
 
-# time.sleep(1000)
+time.sleep(1000)
 
-user_saving(followers=users_1)
-user_saving(follows=users)
-x = user_saving()
-print(x)
+# user_saving(followers=followers)
+# user_saving(follows=follows)
+
+
+
 

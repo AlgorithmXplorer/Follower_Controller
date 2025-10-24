@@ -2,10 +2,16 @@ import os
 import json
 
 def user_datas() -> dict:
+    """
+    Return gmail app_pasw gml_pasw and userame 
+    """
     with open("datas/datas.json","r+",encoding="utf-8") as file:
         return json.load(file)
 
 def user_saving(follows:dict = None,followers:dict = None) -> dict:
+    """
+    Return follower and follows or saving them 
+    """
     if followers == None and follows == None:
         with open("datas/users.json","r+",encoding="utf-8") as file:
             datas:dict = json.load(file)

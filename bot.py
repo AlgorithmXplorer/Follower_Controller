@@ -5,6 +5,10 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 
+import requests
+import json
+
+import pandas as pd
 import time
 
 class Bot:
@@ -15,7 +19,7 @@ class Bot:
 
         self.main_url = "https://github.com/" 
 
-        self.driver = webdriver.Chrome(options=self.driver_maker())
+        self.driver = webdriver.Chrome(options = self.driver_maker())
         self.driver.maximize_window()
 
     def driver_maker(self) -> Options:
@@ -130,13 +134,36 @@ class Bot:
     def controller(self):
         pass
         #* takip edilenleri belirlediğimiz kıraterde olmayanları alıp çıktı edicek
-
+        #* gelen verilerin filtrelenmesinde pandas kullanılacak.
+        #* mesela takip etmeyenleri şu şekil bakıcaz follows[follows in followers] ama burda followers bir liste şeklinde olmalı
+        #* eğerki oda serie olursa o zaman pandas da olan bir metot kullanılır
     
     def unfollow(self,urls:dict):
         pass
 
     def mail_information(self,urls) -> str:
-        pass
+        self.driver.get(url=self.main_url)
+        time.sleep(2)
+
+        infos = []
+
+        def info_taker(url:str):
+            self.driver.get(url=url)
+
+            username = self.driver.find_element(By.XPATH , "//span[@itemprop='additionalName']").text
+            follower_count = self.driver.find_element(By.CSS_SELECTOR , ".text-bold.color-fg-default").text 
+                     
+            message = f"""<h3 style="color: red;"><b>{username}</b> Followed You!</h3><ul style="font-size: 16px;"><br><li style="color: blue;"><b>Link:</b> {url}.</li><br><li style="color: green;"><b>Follower Count:</b> {follower_count}.</li><br></ul>
+"""
+            return message
+
+        for url in urls:
+            msg = info_taker(url=url)
+            infos.append(msg)
+            time.sleep(1.5)
+        return 
+
+
     #* aldığı hesapların takipçi ile takip sayısını alıp şu şekil çıktı vericek
     """
     -----
