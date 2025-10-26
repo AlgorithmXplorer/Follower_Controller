@@ -5,7 +5,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 
-import pandas as pd
 import time
 
 class Bot:
@@ -128,18 +127,12 @@ class Bot:
 
         return followers
 
-    def controller(self):
-        pass
-        #* takip edilenleri belirlediğimiz kıraterde olmayanları alıp çıktı edicek
-        #* gelen verilerin filtrelenmesinde pandas kullanılacak.
-        #* mesela takip etmeyenleri şu şekil bakıcaz follows[follows in followers] ama burda followers bir liste şeklinde olmalı
-        #* eğerki oda serie olursa o zaman pandas da olan bir metot kullanılır
     
-    def unfollow(self,urls:dict):
+    def unfollow(self,users):
         self.driver.get(url= self.main_url)
         time.sleep(2)
 
-        urls_list = list(urls["follows"].values())
+        urls_list = users["links"]
         
         def unfllw(url):
             self.driver.get(url=url)
@@ -155,12 +148,11 @@ class Bot:
 
         
 
-    def mail_information(self,urls:dict) -> str:
+    def mail_information(self,users) -> str:
         self.driver.get(url=self.main_url)
-
-        urls_list = list(urls["followers"].values())
-
         time.sleep(2)
+
+        urls_list = users["links"]
 
         infos = []
 
@@ -169,7 +161,7 @@ class Bot:
 
             username = self.driver.find_element(By.XPATH , "//span[@itemprop='additionalName']").text
             follower_count = self.driver.find_element(By.CSS_SELECTOR , ".text-bold.color-fg-default").text 
-                     
+
             message = f"""<h3 style="color: red;"><b>{username}</b> Followed You!</h3><ul style="font-size: 16px;"><br><li style="color: blue;"><b>Link:</b> {url}.</li><br><li style="color: green;"><b>Follower Count:</b> {follower_count}.</li><br></ul>
 """
             return message
@@ -179,7 +171,7 @@ class Bot:
             infos.append(msg)
             time.sleep(1.5)
         
-        all_msg = f"<p>{'-'*30}</p>".join(infos)
+        all_msg = f"<h1>{'-'*45}</h1>".join(infos)
         return all_msg
 
 

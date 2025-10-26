@@ -1,36 +1,43 @@
 
 from bot import Bot
 from file_funcs import *
+from mailer import *
+from timer import *
 import time
 import json
+import pandas as pd
 
 
-#* datas
+class Main:
+    def __init__(self,datas:dict, ):
+        self.datas = datas
+        self.bot = Bot(username=self.datas["username"],password=self.datas["password"])
+
+        self.bot.log_in()
+
+    def follower_cont(self):
+        old_followers = user_saving()["followers"]
+        if old_followers == {}:
+            user_saving(followers=self.bot.follower_taker()) 
+
+        old_names = list(old_followers.keys()) 
+        
+        new_follower_list = self.bot.follower_taker()
+        new_dict = {"names":list(new_follower_list.keys()) , "links":list(new_follower_list.values())}
+        new_df = pd.DataFrame(data=new_dict) 
+        
+        new_followers = new_df[new_df["names"].apply(func= lambda str_data: str_data not in old_names)]
+        if len(new_followers.index) != 0:
+            msg = self.bot.mail_information(new_followers)
+
+            Mailer(app_psw=self.datas["app_password"],gmail=self.datas["gmail"],datas=msg)
+            user_saving(followers=new_follower_list)
+
+    def follow_cont(self):
+        pass
+
+
 datas = user_datas()
-username = datas["username"]
-password= datas["password"]
-gmail = datas["gmail"]
-app_pasw = datas["app_password"]
 
-
-bot = Bot(username=username,password=password)
-bot.log_in()
-all_users:dict = user_saving()
-
-# follows = bot.following_taker()
-
-# followers = bot.follower_taker()
-
-links = list(all_users["follows"].values())[:5]
-
-# bot.unfollow(urls=links)
-
-
-time.sleep(1000)
-
-# user_saving(followers=followers)
-# user_saving(follows=follows)
-
-
-
-
+x = Main(datas=datas)
+x.follower_cont()
