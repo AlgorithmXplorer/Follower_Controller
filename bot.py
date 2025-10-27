@@ -5,13 +5,17 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 
+
 import time
 
 class Bot:
 
-    def __init__(self,username:str ,password:str):
-        self.username = username
-        self.password = password
+    def __init__(self,datas:dict):
+        self.datas = datas
+        self.username = self.datas["username"]
+        self.password = self.datas["password"]
+        self.app_password = self.datas["app_password"]
+        self.gmail = self.datas["gmail"]
 
         self.main_url = "https://github.com/" 
 
@@ -26,7 +30,7 @@ class Bot:
         
         return options
     
-    def log_in(self):
+    def log_in(self,mail_reader):
         self.driver.get(url= self.main_url+"login")
         time.sleep(2)
 
@@ -36,13 +40,29 @@ class Bot:
 
         psw_inp = self.driver.find_element(By.CSS_SELECTOR , "#password")
         psw_inp.send_keys(self.password)
+        time.sleep(1)
         psw_inp.send_keys(Keys.ENTER)
         time.sleep(2)
+
+        try:
+            is_verifaction = self.driver.find_element(By.XPATH,"//*[@id='login']/div[4]/div/ul/li/a")
+            is_verifaction.click()
+            time.sleep(7.5)
+
+            datas = mail_reader(self.gmail,self.app_password)
+            code_inp_tag = self.driver.find_element(By.CSS_SELECTOR , "#otp")
+            code_inp_tag.send_keys(datas)
+            time.sleep(1)
+            code_inp_tag.send_keys(Keys.ENTER)
+            time.sleep(3)
+
+        except Exception as error:
+            self.driver.get(url=self.main_url)
+            
 
 
     def following_taker(self) -> dict:
         self.driver.get(url=self.main_url + self.username )
-        time.sleep(2)
 
         follow_tag = self.driver.find_element(By.XPATH , "/html/body/div[1]/div[6]/main/div/div/div[1]/div/div/div[3]/div[2]/div[3]/div/a[2]")
         follow_tag.click()
@@ -143,7 +163,7 @@ class Bot:
             time.sleep(2)
 
 
-        for url in urls:
+        for url in urls_list:
             unfllw(url=url)            
 
         
@@ -173,6 +193,11 @@ class Bot:
         
         all_msg = f"<h1>{'-'*45}</h1>".join(infos)
         return all_msg
+
+
+    def profile_info(self,users):
+        pass
+    #* aldığı profillerin takipçi iler takip saysısını alıp çıktı edicek
 
 
     #* aldığı hesapların takipçi ile takip sayısını alıp şu şekil çıktı vericek

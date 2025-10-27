@@ -1,7 +1,7 @@
 
 from bot import Bot
 from file_funcs import *
-from mailer import *
+from mail_funcs import *
 from timer import *
 import time
 import json
@@ -9,11 +9,11 @@ import pandas as pd
 
 
 class Main:
-    def __init__(self,datas:dict, ):
+    def __init__(self,datas:dict):
         self.datas = datas
-        self.bot = Bot(username=self.datas["username"],password=self.datas["password"])
+        self.bot = Bot(datas=self.datas)
 
-        self.bot.log_in()
+        self.bot.log_in(mail_reader=mail_reader)
 
     def follower_cont(self):
         old_followers = user_saving()["followers"]
@@ -34,10 +34,14 @@ class Main:
             user_saving(followers=new_follower_list)
 
     def follow_cont(self):
-        pass
+        follows_list = self.bot.following_taker()
+        user_saving(follows=follows_list)
+        # follows_dict = fol 
+
+        # self.bot.profile_info()
 
 
 datas = user_datas()
 
 x = Main(datas=datas)
-x.follower_cont()
+x.follow_cont()
