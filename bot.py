@@ -26,7 +26,7 @@ class Bot:
         options = Options()
         options.add_argument("--lang=en-US")
         # options.add_argument("--headless")
-        options.add_argument("--incognito")
+        # options.add_argument("--incognito")
         
         return options
     
@@ -42,7 +42,7 @@ class Bot:
         psw_inp.send_keys(self.password)
         time.sleep(1)
         psw_inp.send_keys(Keys.ENTER)
-        time.sleep(2)
+        time.sleep(3)
 
         try:
             is_verifaction = self.driver.find_element(By.XPATH,"//*[@id='login']/div[4]/div/ul/li/a")
@@ -63,6 +63,7 @@ class Bot:
 
     def following_taker(self) -> dict:
         self.driver.get(url=self.main_url + self.username )
+        time.sleep(5)
 
         follow_tag = self.driver.find_element(By.XPATH , "/html/body/div[1]/div[6]/main/div/div/div[1]/div/div/div[3]/div[2]/div[3]/div/a[2]")
         follow_tag.click()
@@ -194,20 +195,35 @@ class Bot:
         all_msg = f"<h1>{'-'*45}</h1>".join(infos)
         return all_msg
 
+ 
+    def profile_filter(self,users):
+        self.driver.get(self.main_url)
+        time.sleep(2)
+        links = list(users["links"])
 
-    def profile_info(self,users):
-        pass
+
+        will_unfollow = {}
+        for link in links:
+            self.driver.get(url=link)
+            tags = self.driver.find_elements(By.CSS_SELECTOR , ".text-bold.color-fg-default")
+            counts = [float(tag.text[:-1])*1000 if "k" in tag.text else int(tag.text) for tag in tags]
+            follower_count = counts[0]
+            following_count = counts[1]
+
+            user_name = link.split("/")[-1]
+
+            if follower_count <= 500:
+                will_unfollow.update({user_name:link})
+            elif follower_count + following_count < 1000:
+                will_unfollow.update({user_name:link})
+            else:
+                time.sleep(0.5)
+                continue
+
+        return will_unfollow
+
     #* aldığı profillerin takipçi iler takip saysısını alıp çıktı edicek
 
-
-    #* aldığı hesapların takipçi ile takip sayısını alıp şu şekil çıktı vericek
-    """
-    -----
-    xxx hesabı 
-    takipçi: 
-    url:
-    -----
-    """
 
     def closer(self):
         self.driver.close()

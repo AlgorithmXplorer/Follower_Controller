@@ -14,6 +14,8 @@ class Main:
         self.bot = Bot(datas=self.datas)
 
         self.bot.log_in(mail_reader=mail_reader)
+        time.sleep(2)        
+
 
     def follower_cont(self):
         old_followers = user_saving()["followers"]
@@ -36,12 +38,19 @@ class Main:
     def follow_cont(self):
         follows_list = self.bot.following_taker()
         user_saving(follows=follows_list)
-        # follows_dict = fol 
+        follows_dict = {"names":list(follows_list.keys()), "links":list(follows_list.values())} 
+        df_follow = pd.DataFrame(data=follows_dict)
 
-        # self.bot.profile_info()
+        follower_list = list(user_saving()["followers"].keys())
 
+        unfollowers = df_follow[df_follow["names"].apply(func=lambda name: name not in follower_list)]
+
+        
+        will_unflw = self.bot.profile_filter(users=unfollowers)
+        
 
 datas = user_datas()
 
 x = Main(datas=datas)
+
 x.follow_cont()
