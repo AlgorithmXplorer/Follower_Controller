@@ -2,9 +2,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
-
 
 import time
 
@@ -25,7 +23,7 @@ class Bot:
     def driver_maker(self) -> Options:
         options = Options()
         options.add_argument("--lang=en-US")
-        # options.add_argument("--headless")
+        options.add_argument("--headless")
         # options.add_argument("--incognito")
         
         return options
@@ -56,7 +54,7 @@ class Bot:
             code_inp_tag.send_keys(Keys.ENTER)
             time.sleep(3)
 
-        except Exception as error:
+        except:
             self.driver.get(url=self.main_url)
             
 
@@ -108,9 +106,6 @@ class Bot:
                 break
         return users
 
-    #t NOT: YAGMAİL İLE YAPICAĞIMIZ FONKSYİON İÇİN AYRI BİR FONKSİYON YAPICAZ. BU FUNC BİZE TAKİPÇİLERİ KAYDEDECEĞİMİZ
-    #T      DOSYADAKİ TAKİPÇİlERİ ÇIKTI EDİCEK VE FOLLOW_TAKER DAN ÖNCE VE SONRA ÇALIŞICAK ARDINDAN ALINAN İKİ LİSTE İLE(KEY LİSTESİ) BİZDE YAGMAİL FONKSİYONU İÇİNDE FARKLI OLANLARI BULUP YAGMAİL İLE ÇIKTI EDİCEZ.
-    #T      BU FONKSİYON İLE TAKİP ETMEYİ BIRAKANLARIDA BULABİLİRİZ  
 
 
     def follower_taker(self) ->dict :
@@ -143,7 +138,7 @@ class Bot:
                 next_tag.click()
                 time.sleep(3)
             
-            except Exception as error:
+            except :
                 break
 
         return followers
@@ -196,15 +191,17 @@ class Bot:
         return all_msg
 
  
-    def profile_filter(self,users):
+    def profile_filter(self,users) -> list[dict]:
         self.driver.get(self.main_url)
         time.sleep(2)
         links = list(users["links"])
 
 
         will_unfollow = {}
+        will_stay_follow = {}
         for link in links:
             self.driver.get(url=link)
+            time.sleep(0.5)
             tags = self.driver.find_elements(By.CSS_SELECTOR , ".text-bold.color-fg-default")
             counts = [float(tag.text[:-1])*1000 if "k" in tag.text else int(tag.text) for tag in tags]
             follower_count = counts[0]
@@ -217,12 +214,11 @@ class Bot:
             elif follower_count + following_count < 1000:
                 will_unfollow.update({user_name:link})
             else:
+                will_stay_follow.update({user_name:link})
                 time.sleep(0.5)
-                continue
+                
 
-        return will_unfollow
-
-    #* aldığı profillerin takipçi iler takip saysısını alıp çıktı edicek
+        return [will_unfollow , will_stay_follow]
 
 
     def closer(self):
