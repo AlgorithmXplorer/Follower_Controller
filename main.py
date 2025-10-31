@@ -1,10 +1,10 @@
 
 from bot import Bot
-from file_funcs import *
-from mail_funcs import *
-from timer import *
+from file_funcs import user_saving,user_datas
+from mail_funcs import Mailer,mail_reader
+from timer import timer
 import time
-import json
+
 import pandas as pd
 
 
@@ -15,6 +15,18 @@ class Main:
 
         self.bot.log_in(mail_reader=mail_reader)
         time.sleep(2)        
+
+
+    def main(self):
+        while True:
+            self.bot.driver.get(self.bot.main_url)
+
+            self.follower_cont()
+            time.sleep(5)
+            self.follow_cont()
+            wait_time = timer()
+            time.sleep(wait_time)
+
 
 
     def follower_cont(self):
@@ -38,19 +50,31 @@ class Main:
     def follow_cont(self):
         follows_list = self.bot.following_taker()
         user_saving(follows=follows_list)
+
         follows_dict = {"names":list(follows_list.keys()), "links":list(follows_list.values())} 
         df_follow = pd.DataFrame(data=follows_dict)
 
         follower_list = list(user_saving()["followers"].keys())
 
         unfollowers = df_follow[df_follow["names"].apply(func=lambda name: name not in follower_list)]
-
         
-        will_unflw = self.bot.profile_filter(users=unfollowers)
-        
+        if len(unfollowers.index) != 0:
+            after_fiter = self.bot.profile_filter(users=unfollowers)
+            will_unflw = after_fiter[0]
+            will_stay_flw = after_fiter[1]
 
+            stay_follow_df = df_follow[df_follow["names"].apply(func=lambda name: name in follower_list)]
+            for name,link in zip(stay_follow_df["names"],stay_follow_df["links"]):
+                will_stay_flw.update({name:link})
+
+            user_saving(follows=will_stay_flw)
+
+            unflw_df = pd.DataFrame(data= {"names":list(will_unflw.keys()),"links":list(will_unflw.values())})
+            self.bot.unfollow(users=unflw_df)
+    
+        
 datas = user_datas()
-
 x = Main(datas=datas)
+x.main()
 
-x.follow_cont()
+
