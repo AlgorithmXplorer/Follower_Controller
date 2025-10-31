@@ -20,12 +20,12 @@ def user_saving(follows:dict = None,followers:dict = None) -> dict:
     with open("datas/users.json","r+", encoding="utf-8") as file:
         datas:dict = json.load(file)
 
-    if followers == None:
+    if followers == None and follows != None:
         with open("datas/users.json","w", encoding="utf-8") as file:
             datas["follows"] = follows
             json.dump(datas,file,sort_keys=False,indent=4)
     
-    elif follows == None:
+    elif follows == None and followers != None:
         with open("datas/users.json","w", encoding="utf-8") as file:
             datas["followers"] = followers
             json.dump(datas,file,sort_keys=False,indent=4)
