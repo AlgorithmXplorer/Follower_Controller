@@ -183,10 +183,13 @@ class Bot:
             return message
 
         for url in urls_list:
-            msg = info_taker(url=url)
-            infos.append(msg)
-            time.sleep(1.5)
-        
+            try:
+                msg = info_taker(url=url)
+                infos.append(msg)
+                time.sleep(1.5)
+            except:
+                continue
+            
         all_msg = f"<h1>{'-'*45}</h1>".join(infos)
         return all_msg
 

@@ -30,9 +30,11 @@ class Main:
 
 
     def follower_cont(self):
-        old_followers = user_saving()["followers"]
-        if old_followers == {}:
+        there_are_followers = user_saving()["followers"] 
+        if there_are_followers == {}:
             user_saving(followers=self.bot.follower_taker()) 
+        
+        old_followers = user_saving()["followers"]
 
         old_names = list(old_followers.keys()) 
         
