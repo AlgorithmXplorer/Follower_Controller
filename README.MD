@@ -1,6 +1,8 @@
 # ***Follower Controller***
----
+<br>
 
+---
+<br>
 
 ## ![a.png](images/a.png) **Table of Contents**
 - ### [Decription](#bpng-description) 
@@ -8,24 +10,43 @@
 - ### [Setup](#fpng-setup) 
 - ### [Usage](#epng-usage) 
 - ### [Third Party License](#fpng-third-party-licenses) 
+<br>
 
 ---
+<br>
 
 ## ![b.png](images/b.png) **Description**
+- Projenin yapılış amacı; takipçi ve takip edilenleri kontrol eden bir bot olması. Eğerki sürekli takipçilerinizi ve takip edilenleri kontrol ediyorusanız bunu sizin yerinize yapıyor.
+<br>
 
 ---
+<br>
 
 ## ![c.png](images/c.png) **Key Features**
+- Projenin iki ana fonksiyonu vardır:
+    <br>
+    - Birinci olarak, takipçi bildirim sistemidir. Bu sistemde sizi yeni takip edenler bir mail içerisinde isimleri ve bilgileri gönderilir.
+    <br>
+
+    - İkinci olarak, sizin takip ettiğiniz ama sizi takip etmeyen kişilerin filtrelenmesi. Ve filtreler sonucunda istenmeyen kişilerin takipten çıkılması. Bu profiller 
+<br>
 
 ---
+<br>
 
 ## ![f.png](images/d.png) **Setup**
 
+<br>
+
 ---
+<br>
 
 ## ![e.png](images/e.png) **Usage**
 
+<br>
+
 ---
+<br>
 
 ## ![f.png](images/f.png) **Third Party Licenses**
 
