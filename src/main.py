@@ -1,8 +1,8 @@
 
-from bot import Bot
-from file_funcs import user_saving,user_datas
-from mail_funcs import Mailer,mail_reader
-from timer import timer
+from src.bot import Bot
+from src.file_funcs import user_saving,user_datas
+from src.mail_funcs import Mailer,mail_reader
+from src.timer import timer
 import time
 
 import pandas as pd
