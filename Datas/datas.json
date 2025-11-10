@@ -1,0 +1,6 @@
+{
+    "gmail":"Your gmail address that will be use for mailing",
+    "username":"Your github profile name",
+    "password":"Gmail password for loggin",
+    "app_password":"This password allows the server connect to the gmail.You can find this password at gmail setting. İf you dont find the password then ask to chatgbt for password location"
+}
