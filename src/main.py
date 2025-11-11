@@ -18,6 +18,7 @@ class Main:
 
 
     def main(self):
+        time.sleep(30)
         while True:
             self.bot.driver.get(self.bot.main_url)
 
