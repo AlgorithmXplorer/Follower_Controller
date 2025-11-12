@@ -14,25 +14,25 @@
 <br>
 
 ## ![b.png](images/b.png) **Description**
-- Projenin yapılış amacı; takipçi ve takip edilenleri kontrol eden bir bot olması. Eğerki sürekli takipçilerinizi ve takip edilenleri kontrol ediyorusanız bunu sizin yerinize yapıyor.
+- The purpose of this project is to be a bot that controls followers and following users. If you often check your followers and following list, this bot does it automatically for you.
 
 ---
 <br>
 
 ## ![c.png](images/c.png) **Key Features**
-- Projenin iki ana fonksiyonu vardır:
+- The project has two main functions:
     <br>
-    - Birinci olarak, takipçi bildirim sistemidir. Bu sistemde sizi yeni takip edenler bir mail içerisinde isimleri ve bilgileri gönderilir.
+    - First, it has a follower notification system. In this system, people who recently followed you are sent to you in an email with their names and details.
     <br>
 
-    - İkinci olarak, sizin takip ettiğiniz ama sizi takip etmeyen kişilerin filtrelenmesi. Ve filtreler sonucunda istenmeyen kişilerin takipten çıkılması. Bu profiller 
+    - Second, it filters the users you follow who do not follow you back. After filtering, it can automatically unfollow unwanted users. 
 
 ---
 <br>
 
 ## ![f.png](images/d.png) **Setup**
-- ### ![x.png](images/x.png) *Modüllerin Kurulması*
-    - Uygulamanın kullandığı 4 built in olmayan modül var. Eğerki bunlar veya bunlardan biri bilgisayarınızda yoksa aşağıda gözüken pip kodları ile indirebilirsiniz
+- ### ![x.png](images/x.png) *Installing the Modules*
+    - The application uses 4 modules that are not built-in. If one or more of them are missing from your computer, you can install them with the following pip commands:
     ```
     pip install pyinstaller
     pip install pandas
@@ -40,21 +40,26 @@
     pip install yagmail
     ```
     
-    >***Not***: Yukarıdaki kodların çalışabilmesi için PİP(Python Package Installer) yüklü olması lazım
+    >***Note***: To run these commands, PIP (Python Package Installer) must be installed on your system.
 
 <br>
 
-- ### ![x.png](images/x.png) *Kaynak dosyaların indirilmesi*
-    - Uygulumanın çalışabilmesi için 3 ana ihtiyaç var
-        - <ins>Kaynak kodları</ins>: Kaynak kodlarının hepsi src klasörünün içerisinde bulunmaktadır.
+- ### ![x.png](images/x.png) *Downloading Source Files*
+    - The application needs 3 main components to work:
+        - <ins>Source Codes</ins>: All source files are inside the src folder.
         > src/
-        - <ins>Driver</ins>: Uygulamanın chrome ile bağlantı kurması için bir driver ihtiyacımız var. Bu driver'ı kendiniz interntten bulabilirsiniz ama direk aşağıdaki klasör içinden alabilirsinizde
+        
+        <br>
+        
+        - <ins>Driver</ins>: To connect the app with Chrome, you need a driver. You can download it from the internet or use the one included in the folder below:
         > driver/
 
-        - <ins>Gerekli Veriler</ins>:  Uygulumanın çalışabilmesi için gerekli verileri bulunduran klasörü indirmelisiniz. Bu klasörde takipçi-takip edilen listesi ve uygulumanın çalışabilmesi için gerekli olan verilerinizn olduğu json dosyaları var
+        <br>
+        
+        - <ins>Required Data</ins>:  You must download the folder that contains the necessary data. This folder includes the follower/following list and the JSON files required for the app to run
         >Datas/
     
-    - Bunların hepsine clone ile direk bilgisayarınıza yükleyebilirsiniz
+    - You can download all of them directly to your computer by cloning the repository
 
 
     ```
@@ -68,7 +73,7 @@
 ## ![e.png](images/e.png) **Usage**
 
 - ### ![y.png](images/y.png) *Normal Usage*
-    - Nomral bir kullanım için , driver datas/ ve source files aşağıdaki gibi olmalıdır.
+    - For normal use, the driver, data, and source files should be arranged as follows:
     ```
     app/
     |── main.py
@@ -81,19 +86,22 @@
     |   |── users.json
     |   └── datas.json
     |
-    └──chromedriver.exe
+    └── chromedriver.exe
     ```
-    - Yukarıdaki gibi bir şekilde dosyaları hazırlarsanız sadece <ins>main.py</ins> dosyasını çalıştırmanız uygulamayı çalıştırır 
+    - Once you have everything organized as above, just run the <ins>main.py</ins> file to start the application 
 
 <br>
 
 - ### ![y.png](images/y.png)*Usage with Exe File*
-    - Exe dosyası şeklkinde isterseniz tek yapılması gereken source dosyalarını ***<ins>pyinstaller</ins>*** ile exe haline getirmektir.Bunun için aşağıdaki kodu ***git bash*** terminalinde çalıştırmanız yeter.
+    - If you want to use it as an exe file, you only need to convert the source files into an exe file with <ins>pyinstaller</ins>. Run the following command in the <ins>**Git Bash**</ins> terminal.<br><br>
+
     ```
     pyinstaller --onefile --hidden-import="selenium;email;pandas;yagmail;imaplib;" main.py
     ```
-    >Note: Gitbash terminali, source dosyaları ile aynı konumda açılmalı ve kullanılmalı.
-    - Bu işlemi tamamladıktan sonra klasörünüzde **dist** adında bir klasör olması gerekli. Bu klasörden ***main.exe*** dosyanızı alın ve [Normal Usage](#normal-usage) anlatıldığı gibi yapın ama source dosyları yerine exe dosyanızı koyun.
+    >Note: The Git Bash terminal must be opened in the same location as your source files. 
+    <br>
+
+    - After completing this process, there should be a folder named **dist**. Take your ***main.exe*** file from there and follow the same steps as in [Normal Usage](#normal-usage), but use your exe file instead of the source files.
 
 ---
 <br>
@@ -101,22 +109,22 @@
 ## ![f.png](images/f.png) **Third Party Licenses**
 
 -   ### ![g.png](images/g.png) Yagmail
-    - **License**: <ins>MIT License</ins> → Bu lisans oldukça serbest bir lisans türüdür; kodu kısıtlama olmaksızın kullanabilir, değiştirip dağıtabilirsiniz; lisans bildirimi ve telif hakkı bildiriminin muhafazası gerekir
+    - **License**: <ins>MIT License</ins> → This license is very permissive; you can use, modify, and distribute the code without restriction, as long as you keep the license and copyright notice.
     - **Link**: https://pypi.org/project/yagmail
 <br>
 
 -   ### ![g.png](images/g.png) Selenium
-    - **License**: <ins>Apache License 2.0</ins> → Bu lisans koşullarıyla, yazılımı ticari veya açık kaynak kullanımlarında serbestçe kullanabilirsini  ; tek şart telif hakkı bildirimi ve lisans bildirimini korumanızdır
+    - **License**: <ins>Apache License 2.0</ins> → Under this license, you can freely use the software for commercial or open-source projects; the only requirement is to keep the copyright and license notices.
     - **Link**: https://pypi.org/project/selenium
 <br>
 
 -   ### ![g.png](images/g.png) Pandas
-    - **License**: <ins>BSD 3-Clause License</ins> → Bu lisans, yazılımı geniş şekilde kullanmanıza ve dağıtmanıza izin verir; kaynak kod bildirimlerini korumanız gerekir.
+    - **License**: <ins>BSD 3-Clause License</ins> → This license allows you to use and distribute the software widely, as long as you retain the source code notices.
     - **Link**: https://pypi.org/project/pandas
 <br>
 
 -   ### ![g.png](images/g.png) Pyinstaller
-    - **License**: <ins>GNU General Public License v2 (GPLv2) […with an exception that allows you to build commercial applications with it]</ins> → Bu lisansla, PyInstaller’ı kullanarak oluşturduğunuz yürütülebilir paketleri kendi lisansınızla dağıtabilirsiniz; ancak PyInstaller’ın kaynak kodunda yaptığınız değişiklikleri dağıtırsanız bu değişiklikler GPL v2 şartlarına tabi olur.
+    - **License**: <ins>GNU General Public License v2 (GPLv2) […with an exception that allows you to build commercial applications with it]</ins> → With this license, you can distribute executable packages built with PyInstaller under your own license; but if you distribute changes made to PyInstaller’s source code, they must comply with GPL v2 terms.
     - **Link**: https://pypi.org/project/pyinstaller
 
 
