@@ -3,6 +3,8 @@ import imaplib
 import email
 import re
 
+# This function is used to send the follower data it receives as an email.
+# To do this, it connects to the SMTP server with yagmail and sends the email.
 def Mailer(app_psw,gmail,datas):
     smtp = yagmail.SMTP(user=gmail, password= app_psw)
     smtp.send(
@@ -12,6 +14,9 @@ def Mailer(app_psw,gmail,datas):
     )
     smtp.close()
 
+# The purpose of this function is to read the verification code sent to your email when GitHub requires authentication.
+# It performs the reading process using the imaplib module. You can access the module's documentation
+# from the link below: https://docs.python.org/3/library/imaplib.html
 def mail_reader(gmail,app_pasw) -> str:
     mail = imaplib.IMAP4_SSL("imap.gmail.com")
 
