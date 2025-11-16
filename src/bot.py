@@ -18,30 +18,39 @@ class Bot:
         self.main_url = "https://github.com/" 
 
         self.driver = webdriver.Chrome(options = self.driver_maker())
+
+        # The reason for maximizing the window size is that some elements may not be visible otherwise
         self.driver.maximize_window()
 
+    # This method sets the driver's language preference and allows it to run without showing a window.
     def driver_maker(self) -> Options:
         options = Options()
         options.add_argument("--lang=en-US")
         options.add_argument("--headless")
-        # options.add_argument("--incognito")
         
+        # If you use this parameter, the driver opens in incognito mode, but this triggers bot detection systems.
+        # options.add_argument("--incognito")
+         
         return options
-    
+   
+    # This method allows the bot to log in. Logging in is required so that the bot can unfollow users who do not follow you back.
     def log_in(self,mail_reader):
         self.driver.get(url= self.main_url+"login")
         time.sleep(2)
 
+        # Interaction with the username input field
         username_inp = self.driver.find_element(By.CSS_SELECTOR , "#login_field")
         username_inp.send_keys(self.username)
         time.sleep(3.5)
 
+        # Interaction with the password input field
         psw_inp = self.driver.find_element(By.CSS_SELECTOR , "#password")
         psw_inp.send_keys(self.password)
         time.sleep(1)
         psw_inp.send_keys(Keys.ENTER)
         time.sleep(3)
 
+        # If GitHub requests verification, the try-except block below runs. If not, it returns to the main page.
         try:
             is_verifaction = self.driver.find_element(By.XPATH,"//*[@id='login']/div[4]/div/ul/li/a")
             is_verifaction.click()
@@ -58,15 +67,19 @@ class Bot:
             self.driver.get(url=self.main_url)
             
 
-
+    # This method retrieves the list of users you are following and returns it as a formatted dictionary
     def following_taker(self) -> dict:
+        # The bot goes to the user's profile page
         self.driver.get(url=self.main_url + self.username )
         time.sleep(5)
 
+        # The bot goes to the followers page
         follow_tag = self.driver.find_element(By.XPATH , "/html/body/div[1]/div[6]/main/div/div/div[1]/div/div/div[3]/div[2]/div[3]/div/a[2]")
         follow_tag.click()
         time.sleep(2)
 
+        # User information is inside repeatedly structured div elements.
+        # So we use a loop-based function to extract all data.
         def user_taker():
             xpath = ["//*[@id='user-profile-frame']/div/div[" , "1" , "]/div[2]/a"]
 
@@ -91,6 +104,7 @@ class Bot:
             return clear_users
         
         users = {}
+        # The loop collects followers from every page until there is no "Next" button left.
         while True:
             try:
                 taken_users = user_taker()
@@ -107,15 +121,17 @@ class Bot:
         return users
 
 
-
+    # This method retrieves the list of users who follow you.
     def follower_taker(self) ->dict :
         self.driver.get(url=self.main_url + self.username)
         time.sleep(3)
 
+        # The bot goes to the 'following' page
         follwer_tag = self.driver.find_element(By.XPATH , "/html/body/div[1]/div[6]/main/div/div/div[1]/div/div/div[3]/div[2]/div[3]/div/a[1]")
         follwer_tag.click()
         time.sleep(3)
 
+        # Same logic as followers: the data is inside structured div elements, so we extract via a loop
         def user_taker():
             user_tags = self.driver.find_elements(By.XPATH , "//a[@class='d-inline-block no-underline mb-1']" )
             users = {}
@@ -143,13 +159,15 @@ class Bot:
 
         return followers
 
-    
+    # This method opens each user's profile and unfollows them.
     def unfollow(self,users):
         self.driver.get(url= self.main_url)
         time.sleep(2)
 
+        # Extract links from the given users dictionary
         urls_list = users["links"]
         
+        # Unfollow function executed for each opened profile
         def unfllw(url):
             self.driver.get(url=url)
             time.sleep(2)
@@ -163,7 +181,8 @@ class Bot:
             unfllw(url=url)            
 
         
-
+    # This method visits each user profile and extracts their information.
+    # The data is formatted into a string suitable for sending via email.
     def mail_information(self,users) -> str:
         self.driver.get(url=self.main_url)
         time.sleep(2)
@@ -172,6 +191,8 @@ class Bot:
 
         infos = []
 
+        # This function retrieves the user data from each profile and formats it as HTML.
+        # The reason for using HTML is to send nicely styled emails.
         def info_taker(url:str):
             self.driver.get(url=url)
 
@@ -182,6 +203,7 @@ class Bot:
 """
             return message
 
+        # Loop that collects data from all pages
         for url in urls_list:
             try:
                 msg = info_taker(url=url)
@@ -189,17 +211,21 @@ class Bot:
                 time.sleep(1.5)
             except:
                 continue
-            
+        
         all_msg = f"<h1>{'-'*45}</h1>".join(infos)
         return all_msg
 
  
+    # This method identifies accounts that you follow but do not follow you.
+    # It filters accounts based on certain criteria.
     def profile_filter(self,users) -> list[dict]:
         self.driver.get(self.main_url)
         time.sleep(2)
         links = list(users["links"])
 
-
+        # The method separates users into two groups:
+        # - those who will be unfollowed
+        # - those who will remain followed
         will_unfollow = {}
         will_stay_follow = {}
         for link in links:
@@ -222,8 +248,4 @@ class Bot:
                 
 
         return [will_unfollow , will_stay_follow]
-
-
-    def closer(self):
-        self.driver.close()
 
