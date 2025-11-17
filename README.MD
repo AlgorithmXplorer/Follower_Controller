@@ -66,6 +66,13 @@
     git clone https://github.com/AlgorithmXplorer/Follower_Controller 
     ```
     
+    <br>
+    <br>
+- ### ![x.png](images/x.png) *Writing Required Data to Files*
+    1. Save the data specified in the notes into the datas.json file inside the **Datas** folder
+    2. the **file_funcs.py** file, set the path variable to the path of the **Datas** folder.<br><br>
+    
+* After completing these steps, you can move on to the [Usage](#usage) section 
 
 ---
 <br>

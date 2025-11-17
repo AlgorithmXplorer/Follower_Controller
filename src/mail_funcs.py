@@ -20,7 +20,7 @@ def Mailer(app_psw,gmail,datas):
 def mail_reader(gmail,app_pasw) -> str:
     mail = imaplib.IMAP4_SSL("imap.gmail.com")
 
-    mail.login("bulutmustafa.0134@gmail.com", "zkcavuqwzyjuuqta")
+    mail.login(gmail, app_pasw)
     mail.select("inbox")
     status, data = mail.search(None, 'FROM "noreply@github.com"')
     mail_ids = data[0].split() 
