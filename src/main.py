@@ -1,8 +1,8 @@
 
-from src.bot import Bot
-from src.file_funcs import user_saving,user_datas
-from src.mail_funcs import Mailer,mail_reader
-from src.timer import timer
+from bot import Bot
+from file_funcs import user_saving,user_datas
+from mail_funcs import Mailer,mail_reader
+from timer import timer
 import time
 
 import pandas as pd
@@ -21,10 +21,13 @@ class Main:
         time.sleep(30)
         while True:
             self.bot.driver.get(self.bot.main_url)
+            if self.datas["systems"]["follower_control_system"]:
+                self.follower_cont()
+                time.sleep(10) 
+            
+            if self.datas["systems"]["follows_control_system"]:
+                self.follow_cont()
 
-            self.follower_cont()
-            time.sleep(5)
-            self.follow_cont()
             wait_time = timer()
             time.sleep(wait_time)
 
@@ -51,6 +54,10 @@ class Main:
             user_saving(followers=new_follower_list)
 
     def follow_cont(self):
+
+        user_saving(followers=self.bot.follower_taker()) 
+        time.sleep(5)
+
         follows_list = self.bot.following_taker()
         user_saving(follows=follows_list)
 

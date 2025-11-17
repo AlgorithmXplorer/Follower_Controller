@@ -10,10 +10,11 @@ class Bot:
 
     def __init__(self,datas:dict):
         self.datas = datas
-        self.username = self.datas["username"]
-        self.password = self.datas["password"]
-        self.app_password = self.datas["app_password"]
-        self.gmail = self.datas["gmail"]
+        self.username:str = self.datas["username"]
+        self.password:str = self.datas["password"]
+        self.app_password:str = self.datas["app_password"]
+        self.gmail:str = self.datas["gmail"]
+        self.requirements:dict = self.datas["follow_requirement"]
 
         self.main_url = "https://github.com/" 
 
@@ -199,6 +200,8 @@ class Bot:
         time.sleep(2)
         links = list(users["links"])
 
+        min_follower_count = self.requirements["min_follower_count"]
+        min_network_count = self.requirements["min_network_count"]
 
         will_unfollow = {}
         will_stay_follow = {}
@@ -212,10 +215,12 @@ class Bot:
 
             user_name = link.split("/")[-1]
 
-            if follower_count <= 500:
+            if follower_count <= min_follower_count:
                 will_unfollow.update({user_name:link})
-            elif follower_count + following_count < 1000:
+
+            elif follower_count + following_count < min_network_count:
                 will_unfollow.update({user_name:link})
+            
             else:
                 will_stay_follow.update({user_name:link})
                 time.sleep(0.5)

@@ -2,5 +2,14 @@
     "gmail":"Your gmail address that will be use for mailing",
     "username":"Your github profile name",
     "password":"Gmail password for loggin",
-    "app_password":"This password allows the server connect to the gmail.You can find this password at gmail setting. İf you dont find the password then ask to chatgbt for password location"
+    "app_password":"This password allows the server connect to the gmail.You can find this password at gmail setting. İf you dont find the password then ask to chatgbt for password location",
+    "systems": {
+        "follower_control_system": true,
+        "follows_control_system": true
+    },
+    "follow_requirement": {
+        "min_follower_count":"integer count of minimum follower",
+        "min_network_count":"integer count of minimum network"
+    }
+
 }
